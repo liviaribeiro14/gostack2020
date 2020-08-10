@@ -15,8 +15,16 @@ function App() {
     });
   }, []);
 
-  function handleAddProject() {
-    setProjects([...projects, `Novo projeto ${Date.now()}`]);
+  async function handleAddProject() {
+    // setProjects([...projects, `Novo projeto ${Date.now()}`]);
+    const response = await api.post("projects", {
+      title: `Frontend com Asp.net ${Date.now()}`,
+      owner: "Velhinho",
+    });
+
+    const project = response.data;
+
+    setProjects([...projects, project]);
   }
 
   return (
