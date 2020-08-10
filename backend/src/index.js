@@ -1,9 +1,11 @@
 const express = require("express");
+const cors = require("cors");
 const { uuid, isUuid } = require("uuidv4");
 
 const app = express();
 
 app.use(express.json);
+app.use(cors);
 
 const projects = [];
 
@@ -29,64 +31,62 @@ function validateProjectId(request, response, next) {
   return next();
 }
 
-app.use(logRequests);
-app.use("/projects/:id", validateProjectId);
+//app.use(logRequests);
+//app.use("/projects/:id", validateProjectId);
 
-app.get("/projects", (_, response) => {
+app.get("/projects", (request, response) => {
   const { title } = request.query;
 
-  const results = title
-    ? projects.filter((project) => project.title.includes(title))
-    : projects;
+  // const results = title
+  //   ? projects.filter((project) => project.title.includes(title))
+  //   : projects;
 
   return response.json(results);
 });
 
-app.post("/projects", (request, response) => {
-  const { title, owner } = request.body;
+// app.post("/projects", (request, response) => {
+//   const { title, owner } = request.body;
 
-  const project = { id: uuid(), title, owner };
+//   const project = { id: uuid(), title, owner };
 
-  projects.push(project);
+//   projects.push(project);
 
-  return response.json(project);
-});
+//   return response.json(project);
+// });
 
-app.put("/projects/:id", (request, response) => {
-  const { id } = request.params;
-  const { title, owner } = request.body;
+// app.put("/projects/:id", (request, response) => {
+//   const { id } = request.params;
+//   const { title, owner } = request.body;
 
-  const projectIndex = projects.findIndex((project) => project.id === id);
+//   const projectIndex = projects.findIndex((project) => project.id === id);
 
-  if (projectIndex < 0) {
-    return response.status(400).json({ error: "Project not found." });
-  }
+//   if (projectIndex < 0) {
+//     return response.status(400).json({ error: "Project not found." });
+//   }
 
-  const project = {
-    id,
-    title,
-    owner,
-  };
+//   const project = {
+//     id,
+//     title,
+//     owner,
+//   };
 
-  projects[projectIndex] = project;
+//   projects[projectIndex] = project;
 
-  return response.json(project);
-});
+//   return response.json(project);
+// });
 
-app.delete("/projects/:id", (_, response) => {
-  const { id } = request.params;
+// app.delete("/projects/:id", (request, response) => {
+//   const { id } = request.params;
 
-  const projectIndex = projects.findIndex((project) => project.id === id);
+//   const projectIndex = projects.findIndex((project) => project.id === id);
 
-  if (projectIndex < 0) {
-    return response.status(400).json({ error: "Project not found." });
-  }
+//   if (projectIndex < 0) {
+//     return response.status(400).json({ error: "Project not found." });
+//   }
 
-  projects.splice(projectIndex, 1);
+//   projects.splice(projectIndex, 1);
 
-  return response.status(204).send();
-});
+//   return response.status(204).send();
+// });
 
-app.listen(3333, () => {
-  console.log("Hey, backend!");
-});
+app.listen(3333);
